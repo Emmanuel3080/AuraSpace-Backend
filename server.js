@@ -22,8 +22,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 app.listen(port, () => {
-  console.log(`Port Running at localhost:http://${port}`);
-});
+  console.log(`Port Running at ${port}`);
+});    
 connectMongose();
 
 app.get("/", (req, res) => {

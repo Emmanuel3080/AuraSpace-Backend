@@ -31,7 +31,7 @@ const handleAdminPassword = async (req, res, next) => {
       user.OrganizerName,
       user.email,
       newOtp
-    );
+    );  
 
     await AdminModel.findByIdAndUpdate(user._id, {
       OTP: newOtp,
