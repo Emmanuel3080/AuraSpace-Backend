@@ -3,6 +3,8 @@
 const AdminModel = require("../Model/AdminModel");
 const BookingModel = require("../Model/BokkingModel");
 const eventModel = require("../Model/eventModel");
+const userModel = require("../Model/userModel");
+const AdminEventsBooking = require("../Utils/BookingsConfirmEmail");
 const confirmEvent = require("../Utils/EventConfirm");
 
 const bookTicket = async (req, res, next) => {
@@ -20,7 +22,7 @@ const bookTicket = async (req, res, next) => {
     });
   }
   try {
-    const event = await eventModel.findById(eventId);
+    const event = await eventModel.findById(eventId).populate("createdBy");
     if (!event) {
       return res.status(400).json({
         Message: "Event Not Found",
@@ -81,11 +83,20 @@ const bookTicket = async (req, res, next) => {
         new: true,
       }
     );
+    const adminEmail = event.createdBy.email;
 
     // const adminTotalPrice = await
     // await AdminModel.findByIdAndUpdate()
 
     const bookingConfirmation = await confirmEvent(name, email, eventInfo);
+
+    const sendEmailAdmin = await AdminEventsBooking(
+      name,
+      adminEmail,
+      email,
+      event.title,
+      event.location  
+    );
 
     return res.status(201).json({
       Message: "Booking successful",
@@ -93,6 +104,7 @@ const bookTicket = async (req, res, next) => {
       bookEvent,
       eventInfo,
       bookingConfirmation,
+      sendEmailAdmin,
     });
   } catch (error) {
     console.log(error);
@@ -179,6 +191,29 @@ const getEvents = async (req, res, next) => {
   }
 };
 
+const getAllBookings = async (req, res, next) => {
+  try {
+    const bookings = await BookingModel.find()
+      .populate("userId", "name email")
+      .populate("eventId", "title createdBy.name");
+
+    if (!bookings) {
+      return res.status(301).json({
+        Message: "Error Identifying User",
+        Status: "Error",
+      });
+    }
+
+    return res.status(201).json({
+      Message: "Booking Fetched Successfully",
+      Status: "Success",
+      No_of_Bookings: bookings.length,
+      bookings,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 const searchFilterEvents = async (req, res, next) => {
   try {
     const {
@@ -282,4 +317,5 @@ module.exports = {
   getEvents,
   getSingleBooking,
   searchFilterEvents,
+  getAllBookings,
 };

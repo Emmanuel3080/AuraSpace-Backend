@@ -15,7 +15,7 @@ const adminRouter = require("./Router/adminRouter");
 // require("./NodemailerConfig/nodemailer")
 dotenv.config();
 
-const port = process.env.port;
+const port = process.env.PORT;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

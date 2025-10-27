@@ -27,6 +27,7 @@ const {
   generateAdminNewOtp,
   updateAdminDetails,
 } = require("../AdminController/adminAuth");
+const { getAllBookings } = require("../UserController/userEvents");
 
 const adminRouter = express.Router();
 
@@ -92,5 +93,7 @@ adminRouter.delete(
   isAdmin,
   deleteSingleEvent
 );
+
+adminRouter.get("/bookings", isAdminLoggedIn,isAdmin, getAllBookings);
 
 module.exports = adminRouter;
