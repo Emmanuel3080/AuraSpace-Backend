@@ -83,7 +83,7 @@ const confirmEvent = async (name, email, eventDetails) => {
         </p>
 
         <div style="text-align: center; margin-top: 35px;">
-          <a href="http://localhost:5173/tickets/${bookingId}" style="display: inline-block; background: #3b82f6; color: white; text-decoration: none; padding: 12px 26px; border-radius: 6px; font-weight: 600; font-size: 15px; letter-spacing: 0.3px;">
+          <a href="https://aura-space-frontend.vercel.app/tickets/${bookingId}" style="display: inline-block; background: #3b82f6; color: white; text-decoration: none; padding: 12px 26px; border-radius: 6px; font-weight: 600; font-size: 15px; letter-spacing: 0.3px;">
             View My Ticket
           </a>
         </div>
