@@ -15,16 +15,17 @@ const adminRouter = require("./Router/adminRouter");
 // require("./NodemailerConfig/nodemailer")
 dotenv.config();
 
-const port = process.env.PORT;
+const port = process.env.PORT || 
+4500
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(morgan("dev"));
+app.use(morgan("dev"));    
 
 app.listen(port, () => {
   console.log(`Port Running at ${port}`);
 });    
-connectMongose();
+connectMongose();   
 
 app.get("/", (req, res) => {
   res.send("Heloooo Emmanuel");

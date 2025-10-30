@@ -1,4 +1,4 @@
-const transporter = require("../NodemailerConfig/nodemailer");
+const sendMail = require("../Utils/ResendSetup");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -29,12 +29,7 @@ const confirmEvent = async (name, email, eventDetails) => {
   const formattedTime = formatTime(startTime);
   const formattedEndTime = formatTime(endTime);
 
-  try {
-    const messageInfo = await transporter.sendMail({
-      to: email,
-      from: `${companyName} <${supportEmail}>`,
-      subject: `Booking Confirmation ${eventName}`,
-      html: `
+  const htmlContent = `
   <div style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6fa; padding: 40px;">
     <div style=" background-color: #ffffff; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid #e6ecf3;">
 
@@ -100,15 +95,33 @@ const confirmEvent = async (name, email, eventDetails) => {
       </div>
     </div>
   </div>
-`,
+`;
+
+  try {
+    const response = await sendMail({
+      to: email,
+      from: `${companyName} <${supportEmail}`,
+      subject: `Booking Confirmation ${eventName}`,
+      html: htmlContent,
     });
 
-    if (messageInfo) {
-      console.log("✅ Booking confirmation email sent to:", email);
+
+    
+    if (response.success) {
+      console.log(`✅ Booking confirmation email sent to: ${email}`);
+    } else {
+      console.error(`❌ Failed to send booking email to: ${email}`, response.error);
     }
+
+    return response;
   } catch (error) {
-    console.log(error);
+    console.error("Error sending booking confirmation:", error);
+    return { success: false, error };
   }
-};
+
+ 
+
+
+  }
 
 module.exports = confirmEvent;
