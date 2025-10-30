@@ -95,12 +95,12 @@ const bookTicket = async (req, res, next) => {
       adminEmail,
       email,
       event.title,
-      event.location  
+      event.location
     );
 
     return res.status(201).json({
       Message: "Booking successful",
-      Status: "Success",
+      success: true,
       bookEvent,
       eventInfo,
       bookingConfirmation,

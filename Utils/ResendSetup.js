@@ -18,11 +18,11 @@ const sendMail = async ({ to, subject, html, from }) => {
 
     if (error) {
       console.log("Unable to send Email:", error);
-      return { success: false, error };
+      return { success: true, error };
     }
 
     console.log("Email sent:", data);
-    return { success: true, data };
+    return { success: false, data };
   } catch (error) {
     console.log(error);
   }
