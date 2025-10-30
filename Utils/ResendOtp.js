@@ -1,12 +1,14 @@
 const transporter = require("../NodemailerConfig/nodemailer");
 const dotenv = require("dotenv");
 dotenv.config();
+
+const sendMail = require("../Utils/ResendSetup");
 const resendOtp = async (name, email, OTP) => {
   const companyName = process.env.COMPANY_NAME || "My App";
   const supportEmail =
     process.env.SUPPORT_EMAIL || "support@auraspacegmail.com";
   const year = new Date().getFullYear();
-  const html = `
+  const htmlContent = `
   <!doctype html>
   <html>
   <head>
@@ -41,15 +43,15 @@ const resendOtp = async (name, email, OTP) => {
   `;
 
   try {
-    const messageInfo = await transporter.sendMail({
+    const messageInfo = await sendMail({
       to: email,
-      from: `${companyName} <${supportEmail}>`,
       subject: `${companyName} - Your Verification Code `,
-      html,
+      html: htmlContent,
     });
 
-    if (messageInfo) {
+    if (messageInfo.success) {
       console.log("OTP has Been Resent, Check Your Gmail");
+      return messageInfo;
     }
   } catch (error) {
     console.log(error);
