@@ -33,7 +33,7 @@ const confirmEvent = async (name, email, eventDetails) => {
   <div style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6fa; padding: 40px;">
     <div style=" background-color: #ffffff; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid #e6ecf3;">
 
-   
+      
 
       <!-- Body -->
       <div style="padding: 30px;">
@@ -100,17 +100,17 @@ const confirmEvent = async (name, email, eventDetails) => {
   try {
     const response = await sendMail({
       to: email,
-      from: `${companyName} <${supportEmail}`,
       subject: `Booking Confirmation ${eventName}`,
       html: htmlContent,
     });
 
-
-    
     if (response.success) {
       console.log(`✅ Booking confirmation email sent to: ${email}`);
     } else {
-      console.error(`❌ Failed to send booking email to: ${email}`, response.error);
+      console.error(
+        `❌ Failed to send booking email to: ${email}`,
+        response.error
+      );
     }
 
     return response;
@@ -118,10 +118,6 @@ const confirmEvent = async (name, email, eventDetails) => {
     console.error("Error sending booking confirmation:", error);
     return { success: false, error };
   }
-
- 
-
-
-  }
+};
 
 module.exports = confirmEvent;

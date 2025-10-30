@@ -10,7 +10,7 @@ const resend = new Resend(resendKey);
 const sendMail = async ({ to, subject, html, from }) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: from || process.env.GOOGLE_EMAIL,
+      from: "AuraSpace <onboarding@resend.dev>",
       to,
       subject,
       html,
