@@ -1,12 +1,14 @@
 const transporter = require("../NodemailerConfig/nodemailer");
 const dotenv = require("dotenv");
 dotenv.config();
+
+const sendMail = require("../Utils/ResendSetup");
 const passwordReset = async (name, email, OTP) => {
   const companyName = process.env.COMPANY_NAME || "My App";
   const supportEmail =
     process.env.SUPPORT_EMAIL || "support@auraspacegmail.com";
   const year = new Date().getFullYear();
-  let html = `
+  let htmlContent = `
     <!DOCTYPE html>
     <html>
     <body style="margin:0;padding:20px;background:#f4f6f8;font-family:Arial,Helvetica,sans-serif;">
@@ -34,14 +36,13 @@ const passwordReset = async (name, email, OTP) => {
     </html>
   `;
   try {
-    const messageInfo = await transporter.sendMail({   
+    const messageInfo = await sendMail({
       to: email,
-      from: `${companyName} <${supportEmail}>`,
       subject: `${companyName} - Your Verification Code `,
-      html,
+      html: htmlContent,
     });
 
-    if (messageInfo) {
+    if (messageInfo.success) {
       console.log("OTP Sent , Check your gmail");
       return messageInfo;
     }
@@ -51,4 +52,3 @@ const passwordReset = async (name, email, OTP) => {
 };
 
 module.exports = passwordReset;
-       
