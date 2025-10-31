@@ -198,9 +198,9 @@ const getEvents = async (req, res, next) => {
 };
 
 const getAllBookings = async (req, res, next) => {
-  const { eventBook } = req.params;
+  const { eventId } = req.params;
   try {
-    const bookings = await BookingModel.find({ eventBook })
+    const bookings = await BookingModel.find({ eventId })
       .populate("userId", "name email")
       .populate("eventId", "title createdBy.name");
 

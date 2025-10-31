@@ -95,7 +95,7 @@ adminRouter.delete(
 );
 
 adminRouter.get(
-  "/bookings/:eventBook",
+  "/bookings/:eventId",
   isAdminLoggedIn,
   isAdmin,
   getAllBookings
