@@ -40,6 +40,12 @@ const bookTicket = async (req, res, next) => {
         Status: "Error",
       });
     }
+    if (new Date(event.eventDate).getTime() < Date.now()) {
+      return res.status(400).json({
+        Message: "Event Has Closed",
+        Status: "Error",
+      });
+    }
 
     const totalPrice = event.price * quantity;
 
@@ -192,26 +198,36 @@ const getEvents = async (req, res, next) => {
 };
 
 const getAllBookings = async (req, res, next) => {
+  const { eventBook } = req.params;
   try {
-    const bookings = await BookingModel.find()
+    const bookings = await BookingModel.find({ eventBook })
       .populate("userId", "name email")
       .populate("eventId", "title createdBy.name");
 
-    if (!bookings) {
+    if (!bookings || bookings.length === 0) {
       return res.status(301).json({
-        Message: "Error Identifying User",
+        Message: "No bookings found for this event",
         Status: "Error",
       });
     }
+
+    const totalBookings = bookings.length;
+    const uniqueUserBook = new Set(
+      bookings.map((eve) => eve.userId._id.toString())
+    );
+    const totalUniqueUsers = uniqueUserBook.size;
 
     return res.status(201).json({
       Message: "Booking Fetched Successfully",
       Status: "Success",
       No_of_Bookings: bookings.length,
-      bookings,
+      totalBookings,
+      uniqueUserBook,
+      totalUniqueUsers,
     });
   } catch (error) {
     console.log(error);
+    next(error);
   }
 };
 const searchFilterEvents = async (req, res, next) => {

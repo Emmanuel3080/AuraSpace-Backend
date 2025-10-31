@@ -35,7 +35,7 @@ const AdminEventsBooking = async (
               </ul>
     
               <p style="margin-top: 20px;">Please log in to your 
-                <a href=https://aura-space-frontend.vercel.app/dashboard" style="color: #4F46E5; text-decoration: none; font-weight: 600;">
+                <a href="https://aura-space-frontend.vercel.app/dashboard" style="color: #4F46E5; text-decoration: none; font-weight: 600;">
                   admin dashboard
                 </a> 
                 for more details.

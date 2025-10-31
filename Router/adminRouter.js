@@ -94,6 +94,11 @@ adminRouter.delete(
   deleteSingleEvent
 );
 
-adminRouter.get("/bookings", isAdminLoggedIn,isAdmin, getAllBookings);
+adminRouter.get(
+  "/bookings/:eventBook",
+  isAdminLoggedIn,
+  isAdmin,
+  getAllBookings
+);
 
 module.exports = adminRouter;
