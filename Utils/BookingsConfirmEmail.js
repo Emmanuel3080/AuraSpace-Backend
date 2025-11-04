@@ -52,6 +52,7 @@ const AdminEventsBooking = async (
 
   try {
     const eventInfo = await sendMail({
+      from: "onboarding@resend.dev",
       to: email,
       subject: `🎟️ New Ticket Purchase – ${eventTitle}`,
       html: htmlContent,

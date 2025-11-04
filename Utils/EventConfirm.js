@@ -99,6 +99,7 @@ const confirmEvent = async (name, email, eventDetails) => {
 
   try {
     const response = await sendMail({
+      from: "onboarding@resend.dev",
       to: email,
       subject: `Booking Confirmation ${eventName}`,
       html: htmlContent,
