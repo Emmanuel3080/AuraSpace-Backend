@@ -122,5 +122,3 @@ const confirmEvent = async (name, email, eventDetails) => {
 };
 
 module.exports = confirmEvent;
-
-Replace this with

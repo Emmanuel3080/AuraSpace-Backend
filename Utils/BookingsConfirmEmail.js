@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const sendMail = require("../Utils/ResendSetup");
-const { response } = require("express");
+// const { response } = require("express");
 
 const AdminEventsBooking = async (
   name,
@@ -77,5 +77,3 @@ const AdminEventsBooking = async (
 
 module.exports = AdminEventsBooking;
 
-
-Update this too
