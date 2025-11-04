@@ -1,15 +1,17 @@
-const sendMail = require("../Utils/ResendSetup");
+const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
+const transporter = require("../NodemailerConfig/nodemailer");
 dotenv.config();
 
+// const tr
 const confirmEvent = async (name, email, eventDetails) => {
-  const companyName = process.env.COMPANY_NAME || "My App";
-  const supportEmail =
-    process.env.SUPPORT_EMAIL || "support@auraspacegmail.com";
+  const companyName = process.env.COMPANY_NAME || "AuraSpace";
+  const supportEmail = process.env.SUPPORT_EMAIL || process.env.GMAIL_USER;
   const year = new Date().getFullYear();
   const { eventName, eventDate, startTime, location, endTime, bookingId } =
     eventDetails;
 
+  // Format date
   const formattedDate = new Date(eventDate).toLocaleDateString([], {
     weekday: "short",
     year: "numeric",
@@ -17,6 +19,7 @@ const confirmEvent = async (name, email, eventDetails) => {
     day: "numeric",
   });
 
+  // Format time
   const formatTime = (time) => {
     if (!time) return "Invalid Time";
     const [hours, minutes] = time.split(":");
@@ -29,22 +32,18 @@ const confirmEvent = async (name, email, eventDetails) => {
   const formattedTime = formatTime(startTime);
   const formattedEndTime = formatTime(endTime);
 
+  // HTML content
   const htmlContent = `
   <div style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6fa; padding: 40px;">
-    <div style=" background-color: #ffffff; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid #e6ecf3;">
-
-      
-
-      <!-- Body -->
+    <div style="background-color: #ffffff; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.08); overflow: hidden; border: 1px solid #e6ecf3;">
       <div style="padding: 30px;">
         <h2 style="color: #222; font-weight: 600; margin-bottom: 12px;">Hi ${name},</h2>
         <p style="font-size: 15px; color: #555; line-height: 1.7; margin: 0 0 20px;">
-          Thank you for choosing <strong>AuraSpace</strong>! <br/>
+          Thank you for choosing <strong>${companyName}</strong>! <br/>
           Your booking has been <span style="color: #3b82f6; font-weight: 600;">successfully confirmed</span>.
         </p>
 
         <h3 style="color: #3b82f6; font-size: 17px; margin: 25px 0 10px;">Event Details</h3>
-
         <table style="width: 100%; border-collapse: collapse; font-size: 15px;">
           <tr style="background-color: #f9fbff;">
             <td style="padding: 12px 10px; font-weight: 600; color: #333;">Event Name</td>
@@ -89,34 +88,25 @@ const confirmEvent = async (name, email, eventDetails) => {
         </div>
       </div>
 
-      <!-- Footer -->
       <div style="background-color: #f8f9fb; text-align: center; padding: 18px; color: #999; font-size: 13px; border-top: 1px solid #eee;">
-        <p style="margin: 0;">&copy; ${new Date().getFullYear()} AuraSpace Events. All Rights Reserved.</p>
+        <p style="margin: 0;">&copy; ${year} ${companyName}. All Rights Reserved.</p>
       </div>
     </div>
   </div>
-`;
+  `;
 
   try {
-    const response = await sendMail({
-      from: "onboarding@resend.dev",
+    const info = await transporter.sendMail({
+      from: `"${companyName}" <${process.env.GOOGLE_EMAIL}>`,
       to: email,
       subject: `Booking Confirmation ${eventName}`,
       html: htmlContent,
     });
 
-    if (response.success) {
-      console.log(`✅ Booking confirmation email sent to: ${email}`);
-    } else {
-      console.error(
-        `❌ Failed to send booking email to: ${email}`,
-        response.error
-      );
-    }
-
-    return response;
+    console.log(`✅ Booking confirmation email sent to: ${email}`);
+    return { success: true, info };
   } catch (error) {
-    console.error("Error sending booking confirmation:", error);
+    console.error("❌ Error sending booking confirmation:", error);
     return { success: false, error };
   }
 };
