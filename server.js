@@ -13,13 +13,13 @@ const userRouter = require("./Router/userRouter");
 const adminRouter = require("./Router/adminRouter");
 // require("nodemailer");
 // require("./NodemailerConfig/nodemailer")
-dotenv.config();
+dotenv.config();   
 
 const port = process.env.PORT   
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(morgan("dev"));    
+app.use(morgan("dev"));       
    
 app.listen(port, () => {
   console.log(`Port Running at ${port}`);

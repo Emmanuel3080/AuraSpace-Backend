@@ -215,17 +215,33 @@ const getAllBookings = async (req, res, next) => {
 
     const userBookingCount = {};
 
-    bookings.forEach((user) => {
-      const userName = user.userId?.name || "User Not Found";
-      userBookingCount[userName] = (userBookingCount[userName] || 0) + 1;
+    bookings.forEach((booking) => {
+      // const users = userId?._id;
+       const userName = booking.userId?.name || "Unknown User";
+      const userEmail = booking.userId?.email || "Email Not Found";
+      const timestamps = booking?.createdAt
+
+      if (!userBookingCount[userName]) {
+        userBookingCount[userName] = {
+          name: userName,
+          email: userEmail,
+          dateCreated : timestamps,
+          totalBookings: 0,
+        };
+      }
+      userBookingCount[userName].totalBookings += 1;
     });
+
+    const userBookingCountArray = Object.values(userBookingCount);
 
     return res.status(201).json({
       Message: "Booking Fetched Successfully",
       Status: "Success",
       No_of_Bookings: bookings.length,
-      totalBookings,
-      userBookingCount,
+      totalUniqueUsers: userBookingCountArray.length,
+      userBookingCount: userBookingCountArray,
+      // dateCreated
+      // bookings
       // bookingsPrice: bookings.totalPrice,
       // uniqueUserBook: [...uniqueUserBook],
       // totalUniqueUsers,
