@@ -202,7 +202,7 @@ const getAllBookings = async (req, res, next) => {
   try {
     const bookings = await BookingModel.find({ eventId })
       .populate("userId", "name email")
-      .populate("eventId", "title createdBy.name");
+      .populate("eventId", "title createdBy.name price");
 
     if (!bookings || bookings.length === 0) {
       return res.status(301).json({
@@ -212,18 +212,23 @@ const getAllBookings = async (req, res, next) => {
     }
 
     const totalBookings = bookings.length;
-    const uniqueUserBook = new Set(
-      bookings.map((eve) => eve.userId._id.toString())
-    );
-    const totalUniqueUsers = uniqueUserBook.size;
+
+    const userBookingCount = {};
+
+    bookings.forEach((user) => {
+      const userName = user.userId?.name || "User Not Found";
+      userBookingCount[userName] = (userBookingCount[userName] || 0) + 1;
+    });
 
     return res.status(201).json({
       Message: "Booking Fetched Successfully",
       Status: "Success",
       No_of_Bookings: bookings.length,
       totalBookings,
-      uniqueUserBook,
-      totalUniqueUsers,
+      userBookingCount,
+      // bookingsPrice: bookings.totalPrice,
+      // uniqueUserBook: [...uniqueUserBook],
+      // totalUniqueUsers,
     });
   } catch (error) {
     console.log(error);
