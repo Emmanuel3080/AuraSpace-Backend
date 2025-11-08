@@ -217,19 +217,27 @@ const getAllBookings = async (req, res, next) => {
 
     bookings.forEach((booking) => {
       // const users = userId?._id;
-       const userName = booking.userId?.name || "Unknown User";
+      const userName = booking.userId?.name || "Unknown User";
       const userEmail = booking.userId?.email || "Email Not Found";
-      const timestamps = booking?.createdAt
+      const timestamps = booking?.createdAt;
+      const bookingPrice = booking?.totalPrice;
+      const bookingsQuantity = booking?.quantity;
+      const eventPrice = booking?.eventId?.price;
 
-      if (!userBookingCount[userName]) {
-        userBookingCount[userName] = {
+      if (!userBookingCount[userEmail]) {
+        userBookingCount[userEmail] = {
           name: userName,
           email: userEmail,
-          dateCreated : timestamps,
+          dateCreated: timestamps,
           totalBookings: 0,
+          TotalAmountPaid: 0,
+          Quantity: 0,
+          EventPrice: eventPrice,
         };
       }
-      userBookingCount[userName].totalBookings += 1;
+      userBookingCount[userEmail].totalBookings += 1;
+      userBookingCount[userEmail].TotalAmountPaid += bookingPrice;
+      userBookingCount[userEmail].Quantity += bookingsQuantity;
     });
 
     const userBookingCountArray = Object.values(userBookingCount);
@@ -241,7 +249,7 @@ const getAllBookings = async (req, res, next) => {
       totalUniqueUsers: userBookingCountArray.length,
       userBookingCount: userBookingCountArray,
       // dateCreated
-      // bookings
+      // bookings,
       // bookingsPrice: bookings.totalPrice,
       // uniqueUserBook: [...uniqueUserBook],
       // totalUniqueUsers,

@@ -82,7 +82,7 @@ const eventSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    price: {
+    price: {  
       type: Number,
       // validate: {
       //   validator: function (value) {
