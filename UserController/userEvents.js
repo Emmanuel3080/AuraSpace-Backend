@@ -223,6 +223,7 @@ const getAllBookings = async (req, res, next) => {
       const bookingPrice = booking?.totalPrice;
       const bookingsQuantity = booking?.quantity;
       const eventPrice = booking?.eventId?.price;
+      const bookingId = booking?._id;
 
       if (!userBookingCount[userEmail]) {
         userBookingCount[userEmail] = {
@@ -233,6 +234,7 @@ const getAllBookings = async (req, res, next) => {
           TotalAmountPaid: 0,
           Quantity: 0,
           EventPrice: eventPrice,
+          BookingId: bookingId,
         };
       }
       userBookingCount[userEmail].totalBookings += 1;

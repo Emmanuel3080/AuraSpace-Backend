@@ -19,18 +19,18 @@ const port = process.env.PORT
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(morgan("dev"));       
+app.use(morgan  ("dev"));          
       
 app.listen(port, () => {
   console.log(`Port Running at ${port}`);
-});    
+});      
 connectMongose();   
 
 app.get("/", (req, res) => {
   res.send("Heloooo Emmanuel");   
 });
 
-app.use("/user", userRouter);
+app.use("/user", userRouter);              
 app.use("/admin", adminRouter);
 
 app.use("/{*any}", handleError);
