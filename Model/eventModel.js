@@ -32,7 +32,7 @@ const eventSchema = new mongoose.Schema(
     },
     startTime: {
       type: String,
-      required: true,                                  
+      required: true,
     },
     eventDuration: {
       type: String,
@@ -54,7 +54,7 @@ const eventSchema = new mongoose.Schema(
     //       return !value;
     //     },
     //     message:
-    //       "Meeting link is required only for online events and must be empty for physical events",
+    //       "Meeting link is required only for online events and must be empty for physical events",   
     //   },
     // },
     // eventMode: {
@@ -72,17 +72,17 @@ const eventSchema = new mongoose.Schema(
       type: String,
       enum: ["cancelled", "completed", "published", "almostFull"],
       default: "published",
-    },
+    },     
     //   priceCategory: {
     //   type: String,
     //   enum: ["paid", "free"],
     //   default: "free",
     // },
-    TotalAmount: {  
+    TotalAmount: {
       type: Number,
       default: 0,
     },
-    price: {  
+    price: {
       type: Number,
       // validate: {
       //   validator: function (value) {
@@ -108,6 +108,7 @@ const eventSchema = new mongoose.Schema(
       default: 0,
       required: true,
     },
+
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "AdminUsers",

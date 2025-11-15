@@ -78,10 +78,11 @@ const bookTicket = async (req, res, next) => {
 
     //Update the price incurred(profit for admin)
     event.TotalAmount += totalPrice;
+
     await event.save();
 
-    await AdminModel.findByIdAndUpdate(
-      event.createdBy,
+    await AdminModel.findByIdAndUpdate(             
+      event.createdBy,                
       {
         $inc: { totalSales: totalPrice },
       },
